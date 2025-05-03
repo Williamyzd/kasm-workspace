@@ -1,0 +1,24 @@
+services:
+  web:
+    container_name: web
+    image: web:v1.3
+    shm_size: 512m
+    build:
+      context: .
+      dockerfile: dockerfile-kasm-chromium-mcp
+    ipc: host
+    # user: root 
+    privileged: true
+    volumes:
+      - ~/Desktop/web-data/log:/app/log
+      - ~/Desktop/web-data/config:/app/config
+  
+    ports:
+      - "6901:6901"
+      - "8002:8002"
+      - "8001:8001"
+      - "8003:8003"
+    environment:
+      - VNC_PW=132632
+    restart: unless-stopped
+    # command: /bin/bash -c "tail -f /dev/null"
