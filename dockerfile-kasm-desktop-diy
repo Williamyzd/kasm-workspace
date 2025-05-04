@@ -10,10 +10,10 @@ WORKDIR $HOME
 
 ######### Customize Container Here ###########
 
-
-# Install Google Chrome
-# COPY ./src/ubuntu/install/chrome $INST_SCRIPTS/chrome/
-# RUN bash $INST_SCRIPTS/chrome/install_chrome.sh  && rm -rf $INST_SCRIPTS/chrome/
+# arm
+# COPY ./pkgs/arm-sources.list /etc/apt/sources.list
+# amd64
+COPY ./pkgs/sources.list /etc/apt/sources.list
 
 # Install Chromium
 COPY ./src/ubuntu/install/chromium $INST_SCRIPTS/chromium/
@@ -38,7 +38,7 @@ RUN mkdir -p ${BROWER_USER_DIR} && \
 
 COPY ./mcp/start.sh        ${STARTUPDIR}/custom_startup.sh
 COPY ./mcp/config.json     ${MCP_CONFIG}/
-COPY ./mcp/setup_20.x      ${MCP_CONFIG}/nodesource_setup.sh   
+COPY ./pkgs/nodesource_setup.sh      ${MCP_CONFIG}/nodesource_setup.sh   
 
 # 安装nodejs和pip
 # 

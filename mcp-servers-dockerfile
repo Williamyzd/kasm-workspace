@@ -1,0 +1,28 @@
+FROM python:3.12-slim
+
+# 设置阿里云Debian源
+# RUN mkdir -p /etc/apt && \
+    # echo "deb http://mirrors.aliyun.com/debian/ bookworm main non-free non-free-firmware" > /etc/apt/sources.list && \
+    # echo "deb http://mirrors.aliyun.com/debian/ bookworm-updates main non-free non-free-firmware" >> /etc/apt/sources.list && \
+    # echo "deb http://mirrors.aliyun.com/debian-security/ bookworm-security main non-free non-free-firmware" >> /etc/apt/sources.list && \
+
+USER root
+RUN mkdir -p /workerspace/data && \
+    mkdir -p /workerspace/mcps && \
+    mkdir -p /workerspace/logs 
+WORKDIR /workerspace
+COPY ./mcpos/config.json /workerspace/mcps/config.json
+COPY ./mcpos/start.sh /workerspace/mcps/start.sh
+COPY ./pkgs/nodesource_setup.sh    /workerspace/nodesource_setup.sh   
+RUN chmod +x /workerspace/mcps/start.sh &&  \
+    chmod +x nodesource_setup.sh &&./nodesource_setup.sh && \
+    apt update && \
+    apt install nodejs net-tools -y && \
+    rm -rf /var/lib/apt/lists/* && rm nodesource_setup.sh 
+
+RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
+    pip install mcpo && \
+    npx -y @playwright/mcp@latest --headless
+
+EXPOSE 8001
+CMD ["/workerspace/mcps/start.sh"]

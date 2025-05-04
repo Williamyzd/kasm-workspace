@@ -5,7 +5,7 @@ services:
     shm_size: 512m
     build:
       context: .
-      dockerfile: dockerfile-kasm-chromium-mcp
+      dockerfile: dockerfile-kasm-desktop-diy
     ipc: host
     # user: root 
     privileged: true

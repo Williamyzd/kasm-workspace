@@ -2,7 +2,7 @@
 services:
   mcp-server:
     container_name: mcp-server
-    image: mcp-server:latest
+    image: mcp-server:v0.2
     build:
       context: .
       dockerfile: mcp-servers-dockerfile
