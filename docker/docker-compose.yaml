@@ -1,0 +1,15 @@
+
+services:
+  mcp-server:
+    container_name: mcp-server
+    image: mcp-server:latest
+    build:
+      context: .
+      dockerfile: mcp-servers-dockerfile
+    network_mode: host
+    ipc: host
+    volumes:
+      - ./mcps:/workerspace/mcps
+      - ./data:/workerspace/data
+     
+    

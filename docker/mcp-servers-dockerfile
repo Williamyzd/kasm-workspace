@@ -1,0 +1,27 @@
+FROM registry.cn-hangzhou.aliyuncs.com/reg_pub/python:3.11.9-slim 
+
+# 设置阿里云Debian源
+# RUN mkdir -p /etc/apt && \
+    # echo "deb http://mirrors.aliyun.com/debian/ bookworm main non-free non-free-firmware" > /etc/apt/sources.list && \
+    # echo "deb http://mirrors.aliyun.com/debian/ bookworm-updates main non-free non-free-firmware" >> /etc/apt/sources.list && \
+    # echo "deb http://mirrors.aliyun.com/debian-security/ bookworm-security main non-free non-free-firmware" >> /etc/apt/sources.list && \
+    
+RUN apt install -y curl && \
+    curl -fsSL URL_ADDRESS    curl -fsSL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh && \
+    chmod +x nodesource_setup.sh &&./nodesource_setup.sh && \
+    apt update && \
+    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple 
+
+RUN apt install nodejs net-tools -y && \
+    pip install mcpo && \
+    mkdir -p /workerspace/data && \
+    mkdir -p /workerspace/mcps && \
+    mkdir -p /workerspace/logs && \
+    rm -rf /var/lib/apt/lists/* && rm nodesource_setup.sh 
+
+WORKDIR /workerspace
+COPY mcps/config.json /workerspace/mcps/config.json
+COPY mcps/start.sh /workerspace/mcps/start.sh
+RUN chmod +x /workerspace/mcps/start.sh && chmod -R 777 /workerspace 
+EXPOSE 8001
+CMD ["mcps/start.sh"]

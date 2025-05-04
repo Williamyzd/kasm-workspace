@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  playwright:
+    container_name: playwright
+    image: playwright:v0.1
+    build:
+      context: .
+      dockerfile: playwright-dockerfile
+    network_mode: host
+    ipc: host
+  
+    ports:
+      - "5900:5900"
+    command: ["tail", "-f","/dev/null"]
+    
+     
+    

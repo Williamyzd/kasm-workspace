@@ -1,6 +1,6 @@
 ARG BASE_TAG="develop"
-ARG BASE_IMAGE="core-ubuntu-jammy"
-FROM kasmweb/$BASE_IMAGE:$BASE_TAG
+ARG BASE_IMAGE="kasmweb_core-ubuntu-jammy"
+FROM registry.cn-hangzhou.aliyuncs.com/reg_pub/$BASE_IMAGE:$BASE_TAG
 
 USER root
 

@@ -1,0 +1,75 @@
+ARG BASE_TAG="develop"
+ARG BASE_IMAGE="kasmweb_core-ubuntu-jammy"
+FROM registry.cn-hangzhou.aliyuncs.com/reg_pub/$BASE_IMAGE:$BASE_TAG
+USER root
+
+ENV HOME /home/kasm-default-profile
+ENV STARTUPDIR /dockerstartup
+ENV INST_SCRIPTS $STARTUPDIR/install
+WORKDIR $HOME
+
+######### Customize Container Here ###########
+
+
+# Install Google Chrome
+COPY ./src/ubuntu/install/chrome $INST_SCRIPTS/chrome/
+RUN bash $INST_SCRIPTS/chrome/install_chrome.sh  && rm -rf $INST_SCRIPTS/chrome/
+
+# Install Firefox
+COPY ./src/ubuntu/install/firefox/ $INST_SCRIPTS/firefox/
+COPY ./src/ubuntu/install/firefox/firefox.desktop $HOME/Desktop/
+RUN bash $INST_SCRIPTS/firefox/install_firefox.sh && rm -rf $INST_SCRIPTS/firefox/
+
+# Install Custom Certificate Authority
+# COPY ./src/ubuntu/install/certificates $INST_SCRIPTS/certificates/
+# RUN bash $INST_SCRIPTS/certificates/install_ca_cert.sh && rm -rf $INST_SCRIPTS/certificates/
+
+# mcp 
+# 定义环境变量
+# ENV UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+# ENV EXTRA_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+# ENV UV_DEFAULT_INDEX=https://pypi.tuna.tsinghua.edu.cn/simple
+# ENV UV_PYTHON_INSTALL_MIRROR=https://mirror.nju.edu.cn/github-release/indygreg/python-build-standalone/
+# ENV WEB_DIR=/app
+# ENV MCP_CONFIG=$WEB_DIR/config 
+# ENV BROWER_USER_DIR=$WEB_DIR/brower-user-dir  
+# ENV WEB_PYTHON_ENV=$WEB_DIR/mcp-env
+# ENV WEB_LOG=$WEB_DIR/log
+
+
+# RUN mkdir -p ${BROWER_USER_DIR} && \
+#     mkdir -p $WEB_LOG && \
+#     mkdir -p $MCP_CONFIG 
+
+# COPY ./mcp/start.sh        ${MCP_CONFIG}/
+# COPY ./mcp/config.json     ${MCP_CONFIG}/
+# COPY ./mcp/setup_20.x      ${MCP_CONFIG}/nodesource_setup.sh   
+
+# 安装nodejs和pip
+# 
+# RUN chmod +x ${MCP_CONFIG}/nodesource_setup.sh && \
+#     chmod +x ${MCP_CONFIG}/start.sh && \
+#     bash ${MCP_CONFIG}/nodesource_setup.sh && apt-get update && \
+#     apt-get install -y --no-install-recommends nodejs python3-pip && \
+#     pip config set global.index-url $UV_INDEX_URL && \
+#     pip config set global.extra-index-url $EXTRA_INDEX_URL && \
+#     python3 -m pip install --upgrade pip && \
+#     rm -rf /var/lib/apt/lists/* && rm -f ${MCP_CONFIG}/nodesource_setup.sh
+# RUN pip install uv  && \
+# uv venv $WEB_PYTHON_ENV --python 3.12  && \
+# . $WEB_PYTHON_ENV/bin/activate && \
+# uv pip install playwright mcpo 
+# RUN chown 1000:0 $WEB_DIR
+# RUN $STARTUPDIR/set_user_permission.sh $WEB_DIR
+######### End Customizations ###########
+
+RUN chown 1000:0 $HOME
+RUN $STARTUPDIR/set_user_permission.sh $HOME
+
+ENV HOME /home/kasm-user
+WORKDIR $HOME
+RUN mkdir -p $HOME && chown -R 1000:0 $HOME
+
+USER 1000
+# CMD [ "${MCP_CONFIG}/start.sh" ]
+# CMD ["--tail-log"]
