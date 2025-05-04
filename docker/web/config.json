@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "playwright": {
-      "name": "playwright",
-      "url": "http://0.0.0.0:8002/sse"
-    }
-    
-}
-}

@@ -20,8 +20,8 @@ RUN apt install nodejs net-tools -y && \
     rm -rf /var/lib/apt/lists/* && rm nodesource_setup.sh 
 
 WORKDIR /workerspace
-COPY mcps/config.json /workerspace/mcps/config.json
-COPY mcps/start.sh /workerspace/mcps/start.sh
+COPY config.json /workerspace/mcps/config.json
+COPY start.sh /workerspace/mcps/start.sh
 RUN chmod +x /workerspace/mcps/start.sh && chmod -R 777 /workerspace 
 EXPOSE 8001
 CMD ["mcps/start.sh"]
