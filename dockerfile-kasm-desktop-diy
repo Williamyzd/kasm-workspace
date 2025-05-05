@@ -25,7 +25,7 @@ ENV UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
 ENV EXTRA_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
 ENV UV_DEFAULT_INDEX=https://pypi.tuna.tsinghua.edu.cn/simple
 ENV UV_PYTHON_INSTALL_MIRROR=https://mirror.nju.edu.cn/github-release/indygreg/python-build-standalone/
-ENV WEB_DIR=/app
+ENV WEB_DIR=/home/kasm-user/app
 ENV MCP_CONFIG=$WEB_DIR/config 
 ENV BROWER_USER_DIR=$WEB_DIR/brower-user-dir  
 ENV WEB_PYTHON_ENV=$WEB_DIR/mcp-env
@@ -45,15 +45,18 @@ COPY ./pkgs/nodesource_setup.sh      ${MCP_CONFIG}/nodesource_setup.sh
 RUN chmod +x ${MCP_CONFIG}/nodesource_setup.sh && \
     chmod +x ${STARTUPDIR}/custom_startup.sh && \
     bash ${MCP_CONFIG}/nodesource_setup.sh && apt-get update && \
-    apt-get install -y --no-install-recommends nodejs && \
+    apt-get install -y --no-install-recommends nodejs  python3-pip&& \
     rm -rf /var/lib/apt/lists/* && rm -f ${MCP_CONFIG}/nodesource_setup.sh
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh  && \
-. $HOME/.local/bin/env && \
+RUN pip install uv -i  $UV_INDEX_URL && \
 uv venv $WEB_PYTHON_ENV --python 3.12  && \
 . $WEB_PYTHON_ENV/bin/activate && \
 uv pip install playwright mcpo 
-RUN chown 1000:0 $WEB_DIR
-RUN $STARTUPDIR/set_user_permission.sh $WEB_DIR
+
+# RUN $STARTUPDIR/set_user_permission.sh $WEB_DIR && $STARTUPDIR/set_user_permission.sh $WEB_LOG  && chown -R 1000:0 $WEB_DIR  &&\
+#     chown -R 1000:0 $WEB_LOG && \
+#     chown -R 1000:0 $WEB_DIR/config
+
+
 
 ######### End Customizations ###########
 

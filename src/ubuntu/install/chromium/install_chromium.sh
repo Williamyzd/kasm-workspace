@@ -36,7 +36,7 @@ else
   # Install from debian bookworm repos
   mkdir -p /etc/apt/keyrings
   curl -fsSL https://ftp-master.debian.org/keys/archive-key-12.asc | sudo tee /etc/apt/keyrings/debian-archive-key-12.asc
-  echo "deb [signed-by=/etc/apt/keyrings/debian-archive-key-12.asc] http://deb.debian.org/debian bookworm main" | sudo tee /etc/apt/sources.list.d/debian-bookworm.list
+  echo "deb [signed-by=/etc/apt/keyrings/debian-archive-key-12.asc] http://mirrors.tuna.tsinghua.edu.cn/debian bookworm main" | sudo tee /etc/apt/sources.list.d/debian-bookworm.list
   echo -e "Package: *\nPin: release a=bookworm\nPin-Priority: 100" | sudo tee /etc/apt/preferences.d/debian-bookworm
   apt-get update
   apt install -y chromium --no-install-recommends

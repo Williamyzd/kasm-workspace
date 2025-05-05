@@ -3,10 +3,14 @@ services:
   mcp-server:
     container_name: mcp-server
     image: mcp-server:v0.2
+    shm_size: 512m
     build:
       context: .
       dockerfile: mcp-servers-dockerfile
-    network_mode: host
+    ports:
+      - "9002:8002"
+      - "9001:8001"
+      - "9003:8003"
     ipc: host
     volumes:
       - ./mcps:/workerspace/mcps
