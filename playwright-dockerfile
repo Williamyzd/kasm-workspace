@@ -11,4 +11,4 @@ RUN chmod +x nodesource_setup.sh &&./nodesource_setup.sh && \
     pip install playwright && \
     playwright install --with-deps  --only-shell chromium  && \
     rm -rf /var/lib/apt/lists/* && rm nodesource_setup.sh
-CMD ["tail -f /dev/null"]
+CMD ["tail","-f","/dev/null"]
