@@ -1,14 +1,10 @@
 FROM registry.cn-hangzhou.aliyuncs.com/reg_pub/python:3.12-slim 
 COPY ./pkgs/debian-sources.list /etc/apt/sources.list
 USER root 
-WORKDIR /workerspace
-COPY ./pkgs/nodesource_setup.sh    /workerspace/nodesource_setup.sh   
-RUN chmod +x nodesource_setup.sh &&./nodesource_setup.sh && \
-    apt update && \
-    apt install nodejs net-tools -y && \
-    chmod -R 777 /workerspace && \ 
+WORKDIR /workerspace   
+RUN apt update && \
     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
     pip install playwright dotenv && \
     playwright install --with-deps  --only-shell chromium  && \
-    rm -rf /var/lib/apt/lists/* && rm nodesource_setup.sh
+    rm -rf /var/lib/apt/lists/* 
 CMD ["tail","-f","/dev/null"]
