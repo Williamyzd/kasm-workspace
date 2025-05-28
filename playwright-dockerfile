@@ -8,7 +8,7 @@ RUN chmod +x nodesource_setup.sh &&./nodesource_setup.sh && \
     apt install nodejs net-tools -y && \
     chmod -R 777 /workerspace && \ 
     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
-    pip install playwright dotenv && \
+    pip install playwright && \
     playwright install --with-deps  --only-shell chromium  && \
     rm -rf /var/lib/apt/lists/* && rm nodesource_setup.sh
 CMD ["tail","-f","/dev/null"]

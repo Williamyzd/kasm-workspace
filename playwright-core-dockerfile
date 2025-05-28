@@ -3,8 +3,10 @@ COPY ./pkgs/debian-sources.list /etc/apt/sources.list
 USER root 
 WORKDIR /workerspace   
 RUN apt update && \
+    apt install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2 && \
     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
     pip install playwright dotenv && \
     playwright install --with-deps  --only-shell chromium  && \
     rm -rf /var/lib/apt/lists/* 
+
 CMD ["tail","-f","/dev/null"]
