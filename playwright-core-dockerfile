@@ -1,11 +1,11 @@
-FROM registry.cn-hangzhou.aliyuncs.com/reg_pub/python:3.12-slim 
+FROM registry.cn-hangzhou.aliyuncs.com/reg_pub/python:3.11-slim 
 COPY ./pkgs/debian-sources.list /etc/apt/sources.list
 USER root 
 WORKDIR /workerspace   
 RUN apt update && \
     apt install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2 && \
     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
-    pip install playwright dotenv && \
+    pip install playwright dotenv requests  && \
     playwright install --with-deps  --only-shell chromium  && \
     rm -rf /var/lib/apt/lists/* 
 
